@@ -1,0 +1,230 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #FF6B35;
+  --primary-light: #FF8F5E;
+  --primary-bg: #FFF0E8;
+  --text-primary: #1A1A2E;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --bg-page: #F5F5F7;
+  --bg-card: #FFFFFF;
+  --border-color: #F0F0F0;
+  --danger: #FF4D4F;
+  --success: #4CAF50;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  color: var(--text-primary);
+  background: var(--bg-page);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* 响应式布局 */
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg-page);
+  position: relative;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* 全局动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out both;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* PC端布局 */
+@media (min-width: 768px) {
+  #app {
+    max-width: 1200px;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
+}
+
+@media (min-width: 1024px) {
+  #app {
+    max-width: 1400px;
+  }
+}
+
+
+/* 全局美化增强 */
+.card-shadow {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* 渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, #FF6B35, #FF8F5E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 价格标签 */
+.price-tag {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.price-tag .symbol {
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.price-tag .amount {
+  font-weight: 700;
+}
+
+/* 标签样式 */
+.tag-primary {
+  background: linear-gradient(135deg, #FF6B35, #FF8F5E);
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.tag-success {
+  background: #E8F5E9;
+  color: #4CAF50;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.tag-warning {
+  background: #FFF3E0;
+  color: #FF9800;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* 分割线 */
+.divider {
+  height: 8px;
+  background: #f5f5f7;
+}
+
+/* PC端卡片圆角增强 */
+@media (min-width: 768px) {
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+}

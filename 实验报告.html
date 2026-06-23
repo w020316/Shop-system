@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web前端框架技术大作业 - "微商城"的设计与实现</title>
+<style>
+  @page { size: A4; margin: 2.5cm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: '宋体', SimSun, 'Times New Roman', serif; font-size: 12pt; line-height: 20pt; color: #000; background: #fff; }
+  .cover { page-break-after: always; text-align: center; padding-top: 120px; }
+  .cover h1 { font-size: 22pt; font-weight: bold; margin-bottom: 60px; letter-spacing: 2px; }
+  .cover table { margin: 0 auto; border-collapse: collapse; width: 70%; }
+  .cover td { padding: 10px 8px; font-size: 14pt; border: none; text-align: left; }
+  .cover .label { width: 120px; text-align: right; padding-right: 12px; }
+  .cover .value { border-bottom: 1px solid #000; min-width: 200px; }
+  h2 { font-size: 16pt; font-weight: bold; margin: 24px 0 12px; padding-left: 0; text-indent: 0; }
+  h3 { font-size: 14pt; font-weight: bold; margin: 18px 0 8px; }
+  h4 { font-size: 12pt; font-weight: bold; margin: 12px 0 6px; }
+  p { text-indent: 2em; margin: 6px 0; text-align: justify; }
+  table.report { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 10.5pt; }
+  table.report th, table.report td { border: 1px solid #000; padding: 6px 8px; text-align: left; vertical-align: top; }
+  table.report th { background: #f0f0f0; font-weight: bold; text-align: center; }
+  table.report td { text-indent: 0; }
+  .code-block { background: #f8f8f8; border: 1px solid #ddd; border-radius: 4px; padding: 12px; margin: 8px 0; font-family: 'Consolas', 'Courier New', monospace; font-size: 9pt; line-height: 1.5; overflow-x: auto; white-space: pre; text-indent: 0; }
+  .tree { font-family: 'Consolas', monospace; font-size: 10pt; line-height: 1.6; text-indent: 0; white-space: pre; }
+  .section { page-break-inside: avoid; }
+  .mermaid-diagram { background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 12px 0; text-align: center; font-size: 10pt; }
+  .diagram-box { display: inline-block; border: 2px solid #FF6B35; border-radius: 8px; padding: 8px 16px; margin: 4px; background: #FFF5EE; font-size: 10pt; }
+  .diagram-arrow { display: inline-block; margin: 4px 8px; color: #FF6B35; font-weight: bold; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+  .note { background: #FFFDE7; border-left: 3px solid #FFC107; padding: 8px 12px; margin: 8px 0; font-size: 10.5pt; text-indent: 0; }
+  .member-tag { display: inline-block; background: #E3F2FD; color: #1565C0; padding: 1px 6px; border-radius: 3px; font-size: 9pt; margin-left: 4px; }
+  .page-break { page-break-before: always; }
+  img.screenshot { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 8px 0; }
+  .toc { margin: 20px 0; }
+  .toc a { text-decoration: none; color: #333; }
+  .toc li { margin: 4px 0; list-style: none; }
+  .toc ul { padding-left: 20px; }
+</style>
+</head>
+<body>
+<!-- 封面 -->
+<div class="cover">
+  <h1>Web前端框架技术大作业</h1>
+  <table>
+    <tr><td class="label">实验项目</td><td class="value">"微商城"的设计与实现</td></tr>
+    <tr><td class="label">课　　程</td><td class="value">Web前端框架技术</td></tr>
+    <tr><td class="label">学　　院</td><td class="value">工学院</td></tr>
+    <tr><td class="label">学　　期</td><td class="value">2025-2026学年第二学期</td></tr>
+    <tr><td class="label">小组成员</td><td class="value">吴宇威、甘润达、姚泽楷、黄显杰</td></tr>
+    <tr><td class="label">日　　期</td><td class="value">2026年6月</td></tr>
+  </table>
+</div>
+
+<!-- 目录 -->
+<h2>目 录</h2>
+<div class="toc">
+<ul>
+  <li>一、项目介绍</li>
+  <li>二、需求分析</li>
+  <li>三、项目功能设计
+    <ul>
+      <li>3.1 功能结构图</li>
+      <li>3.2 功能模块说明</li>
+    </ul>
+  </li>
+  <li>四、项目开发文件夹组织结构</li>
+  <li>五、项目主要功能模块实现
+    <ul>
+      <li>5.1 项目初始化与路由配置</li>
+      <li>5.2 状态管理（Pinia Store）</li>
+      <li>5.3 首页模块</li>
+      <li>5.4 商品详情模块</li>
+      <li>5.5 购物车模块</li>
+      <li>5.6 用户认证模块</li>
+      <li>5.7 订单模块</li>
+      <li>5.8 分类浏览模块</li>
+      <li>5.9 地址管理模块</li>
+      <li>5.10 商品管理模块</li>
+      <li>5.11 搜索与浏览历史模块</li>
+    </ul>
+  </li>
+  <li>六、测试</li>
+  <li>七、结果分析</li>
+  <li>八、个人总结与分工</li>
+</ul>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 一、项目介绍 -->
+<h2>一、项目介绍</h2>
+
+<p>"微商城"是一个基于 Vue 3 框架开发的轻量级移动端电子商务应用，旨在为用户提供便捷的在线购物体验。项目采用 Vue 3 Composition API + TypeScript 进行开发，使用 Vue Router 4 进行路由管理，Pinia 进行全局状态管理，Vite 作为构建工具，Tailwind CSS 辅助样式开发。</p>
+
+<p>项目实现了完整的电商购物流程，包括商品浏览与搜索、分类筛选、商品详情查看、购物车管理、用户注册与登录、订单创建与支付、收货地址管理、商品收藏、浏览历史记录、商品后台管理等功能。所有数据通过 localStorage 进行本地持久化存储，无需后端服务即可完整运行。</p>
+
+<p>项目采用移动端优先的响应式设计，最大宽度480px居中展示，界面风格以暖橙色（#FF6B35）为主色调，搭配深灰文字和浅灰背景，营造活力与品质并存的购物氛围。</p>
+<!-- 二、需求分析 -->
+<h2>二、需求分析</h2>
+
+<h3>2.1 功能性需求</h3>
+
+<table class="report">
+<tr><th style="width:80px">需求编号</th><th>需求描述</th><th style="width:80px">优先级</th></tr>
+<tr><td>FR-01</td><td>用户可以浏览商品列表，支持按分类筛选和关键词搜索</td><td>高</td></tr>
+<tr><td>FR-02</td><td>用户可以查看商品详情，包括图片、价格、规格、评价</td><td>高</td></tr>
+<tr><td>FR-03</td><td>用户可以将商品加入购物车，支持选择规格和数量</td><td>高</td></tr>
+<tr><td>FR-04</td><td>用户可以管理购物车，包括增减数量、勾选、删除</td><td>高</td></tr>
+<tr><td>FR-05</td><td>用户可以注册和登录，支持手机号和密码验证</td><td>高</td></tr>
+<tr><td>FR-06</td><td>用户可以创建订单并模拟支付流程</td><td>高</td></tr>
+<tr><td>FR-07</td><td>用户可以管理收货地址，支持设置默认地址</td><td>中</td></tr>
+<tr><td>FR-08</td><td>用户可以收藏商品和查看收藏列表</td><td>中</td></tr>
+<tr><td>FR-09</td><td>用户可以按分类浏览商品（左右双栏布局）</td><td>中</td></tr>
+<tr><td>FR-10</td><td>管理员可以添加和删除商品</td><td>中</td></tr>
+<tr><td>FR-11</td><td>系统记录用户浏览历史</td><td>低</td></tr>
+<tr><td>FR-12</td><td>系统提供友好的404错误页面</td><td>低</td></tr>
+</table>
+
+<h3>2.2 非功能性需求</h3>
+
+<table class="report">
+<tr><th style="width:80px">需求编号</th><th>需求描述</th></tr>
+<tr><td>NFR-01</td><td>页面加载时间不超过3秒，交互响应时间不超过200ms</td></tr>
+<tr><td>NFR-02</td><td>支持移动端和桌面端浏览器，响应式适配</td></tr>
+<tr><td>NFR-03</td><td>数据通过localStorage持久化，刷新页面不丢失</td></tr>
+<tr><td>NFR-04</td><td>代码结构清晰，组件化开发，便于维护</td></tr>
+<tr><td>NFR-05</td><td>表单输入需进行格式验证，给出明确错误提示</td></tr>
+</table>
+
+<h3>2.3 技术选型</h3>
+
+<table class="report">
+<tr><th>技术</th><th>版本</th><th>用途</th></tr>
+<tr><td>Vue 3</td><td>3.4.x</td><td>前端框架，Composition API + TypeScript</td></tr>
+<tr><td>Vue Router</td><td>4.x</td><td>路由管理，单页应用导航</td></tr>
+<tr><td>Pinia</td><td>3.x</td><td>状态管理，替代Vuex</td></tr>
+<tr><td>Vite</td><td>5.x</td><td>构建工具，快速开发与打包</td></tr>
+<tr><td>TypeScript</td><td>5.3.x</td><td>类型安全，提升代码质量</td></tr>
+<tr><td>Tailwind CSS</td><td>3.x</td><td>原子化CSS框架</td></tr>
+<tr><td>Lucide Vue</td><td>0.511.x</td><td>图标库</td></tr>
+<tr><td>localStorage</td><td>-</td><td>数据持久化存储</td></tr>
+</table>
+
+<div class="page-break"></div>
+<!-- 三、项目功能设计 -->
+<h2>三、项目功能设计</h2>
+
+<h3>3.1 功能结构图</h3>
+
+<div class="mermaid-diagram">
+  <div style="margin-bottom:12px;font-weight:bold;font-size:12pt;">微商城功能结构图</div>
+  <div style="display:flex;justify-content:center;">
+    <div style="display:inline-block;text-align:left;">
+      <div style="text-align:center;"><span class="diagram-box" style="background:#FF6B35;color:#fff;font-weight:bold;">微商城系统</span></div>
+      <div style="display:flex;justify-content:center;margin:8px 0;"><span style="font-size:14pt;color:#FF6B35;">├──┤</span></div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+        <div style="text-align:center;">
+          <span class="diagram-box">商品浏览</span><br>
+          <span style="font-size:9pt;">├ 首页轮播<br>├ 分类导航<br>├ 热门推荐<br>├ 关键词搜索<br>└ 分类浏览页</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="diagram-box">商品详情</span><br>
+          <span style="font-size:9pt;">├ 图片轮播<br>├ 规格选择<br>├ 用户评价<br>├ 收藏功能<br>└ 浏览记录</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="diagram-box">购物车</span><br>
+          <span style="font-size:9pt;">├ 商品勾选<br>├ 数量增减<br>├ 全选操作<br>├ 删除确认<br>└ 合计结算</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="diagram-box">用户认证</span><br>
+          <span style="font-size:9pt;">├ 手机号注册<br>├ 密码登录<br>├ 表单验证<br>└ 昵称编辑</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="diagram-box">订单系统</span><br>
+          <span style="font-size:9pt;">├ 订单确认<br>├ 模拟支付<br>├ 状态流转<br>├ 确认收货<br>└ 订单详情</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="diagram-box">个人中心</span><br>
+          <span style="font-size:9pt;">├ 用户信息<br>├ 地址管理<br>├ 收藏列表<br>├ 商品管理<br>└ 退出登录</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>3.2 功能模块说明</h3>
+
+<table class="report">
+<tr><th>模块</th><th>功能描述</th><th>相关页面</th></tr>
+<tr><td>商品浏览</td><td>首页展示轮播图、分类导航、热门推荐和商品列表；支持关键词搜索和分类筛选；分类页提供左右双栏浏览</td><td>首页、分类页</td></tr>
+<tr><td>商品详情</td><td>展示商品图片轮播、价格信息、规格选择（颜色/尺寸）、用户评价、收藏功能，底部弹出规格选择弹窗</td><td>商品详情页</td></tr>
+<tr><td>购物车</td><td>展示已添加商品，支持勾选/全选、数量增减、删除确认、合计金额计算，满99元免运费提示</td><td>购物车页</td></tr>
+<tr><td>用户认证</td><td>手机号+密码注册登录，表单格式验证，密码显示切换，错误提示抖动动画</td><td>登录页、注册页</td></tr>
+<tr><td>订单系统</td><td>订单确认、模拟支付（3秒后自动发货）、状态Tab筛选、确认收货、订单详情查看</td><td>订单确认页、订单列表页、订单详情页</td></tr>
+<tr><td>个人中心</td><td>用户信息展示、昵称编辑、订单入口、收藏入口、地址管理入口、商品管理入口、退出登录</td><td>个人中心页</td></tr>
+<tr><td>地址管理</td><td>收货地址列表、新增/编辑地址、设为默认、删除确认</td><td>地址列表页、地址编辑页</td></tr>
+<tr><td>商品管理</td><td>添加新商品（名称/价格/分类/描述）、删除商品确认</td><td>商品管理页</td></tr>
+<tr><td>搜索功能</td><td>独立搜索页面，支持关键词搜索商品，显示搜索结果列表</td><td>搜索页</td></tr>
+<tr><td>浏览历史</td><td>自动记录用户浏览过的商品，按时间倒序展示，支持清空历史</td><td>浏览历史页</td></tr>
+</table>
+
+<div class="page-break"></div>
+<!-- 四、项目开发文件夹组织结构 -->
+<h2>四、项目开发文件夹组织结构</h2>
+
+<div class="tree">
+micro-shop/
+├── public/                          # 静态资源目录
+│   └── favicon.svg                  # 网站图标
+├── src/                             # 源代码目录
+│   ├── data/                        # 数据目录
+│   │   └── products.ts              # 34个商品+8个分类+3个轮播图+分类图标
+│   ├── stores/                      # Pinia状态管理目录
+│   │   ├── index.ts                 # Store统一导出入口
+│   │   ├── product.ts               # 商品Store（分类筛选、搜索、热门推荐）
+│   │   ├── cart.ts                  # 购物车Store（增删改查、全选、持久化）
+│   │   ├── user.ts                  # 用户Store（注册、登录、修改昵称、持久化）
+│   │   ├── order.ts                 # 订单Store（创建、支付、发货、确认收货）
+│   │   ├── favorite.ts              # 收藏Store（收藏/取消、持久化）
+│   │   ├── address.ts               # 地址Store（增删改、设默认、持久化）
+│   │   └── history.ts               # 浏览历史Store（记录、清空、持久化）
+│   ├── components/                  # 公共组件目录
+│   │   ├── TabBar.vue               # 底部导航栏（4个Tab+购物车角标）
+│   │   ├── Toast.vue                # Toast通知组件（成功/错误/信息）
+│   │   ├── ConfirmDialog.vue        # 确认弹窗组件
+│   │   └── ImageWithFallback.vue    # 图片加载失败兜底组件
+│   │   └── Empty.vue                # 空状态组件
+│   ├── composables/                 # 组合式函数目录
+│   │   └── useTheme.ts              # 主题切换组合式函数
+│   ├── lib/                         # 工具库目录
+│   │   └── utils.ts                 # 工具函数（cn函数）
+│   ├── pages/                       # 页面组件目录
+│   │   ├── HomePage.vue             # 首页（轮播图+搜索+分类+热门推荐+商品列表）
+│   │   ├── CategoryPage.vue         # 分类浏览页（左右双栏布局）
+│   │   ├── ProductDetailPage.vue    # 商品详情页（图片轮播+评价+收藏+规格弹窗）
+│   │   ├── CartPage.vue             # 购物车页（勾选+数量+删除确认+结算）
+│   │   ├── LoginPage.vue            # 登录页（密码切换+表单验证+抖动动画）
+│   │   ├── RegisterPage.vue         # 注册页（确认密码+表单验证）
+│   │   ├── ProfilePage.vue          # 个人中心（昵称编辑+功能入口+退出确认）
+│   │   ├── OrderConfirmPage.vue     # 订单确认页（地址选择+商品清单+模拟支付）
+│   │   ├── OrderListPage.vue        # 订单列表页（Tab筛选+支付+确认收货）
+│   │   ├── OrderDetailPage.vue      # 订单详情页（状态卡片+时间线+操作按钮）
+│   │   ├── FavoritesPage.vue        # 收藏列表页
+│   │   ├── AddressListPage.vue      # 地址列表页（设默认+删除）
+│   │   ├── AddressEditPage.vue      # 地址编辑页（新增/编辑+开关切换）
+│   │   ├── ProductManagePage.vue    # 商品管理页（添加/删除商品）
+│   │   ├── SearchPage.vue           # 搜索页
+│   │   ├── ChangePasswordPage.vue   # 修改密码页
+│   │   ├── BrowseHistoryPage.vue    # 浏览历史页
+│   │   ├── AboutPage.vue            # 关于页
+│   │   └── NotFoundPage.vue         # 404错误页面
+│   ├── router/
+│   │   └── index.ts                 # 19个路由+404兜底+滚动重置+鉴权守卫
+│   ├── App.vue                      # 根组件（路由视图+TabBar+Toast）
+│   ├── main.ts                      # 应用入口（创建Vue实例+注册Pinia+Router）
+│   └── style.css                    # 全局样式（CSS变量+动画+重置）
+├── index.html                       # HTML模板（Noto Sans SC字体+主题色）
+├── package.json                     # 项目依赖配置
+├── vite.config.ts                   # Vite构建配置
+├── tailwind.config.js               # Tailwind CSS配置
+├── postcss.config.js                # PostCSS配置
+└── tsconfig.json                    # TypeScript配置
+</div>
+
+<div class="page-break"></div>
+<!-- 五、项目主要功能模块实现 -->
+<h2>五、项目主要功能模块实现</h2>
+
+<h3>5.1 项目初始化与路由配置</h3>
+
+<h4>5.1.1 应用入口（main.ts）</h4>
+<p>应用入口文件负责创建Vue实例，注册Pinia状态管理和Vue Router路由，并将应用挂载到DOM节点。这是整个应用的启动点。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import './style.css'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+// 注册Pinia状态管理
+app.use(createPinia())
+// 注册Vue Router路由
+app.use(router)
+
+app.mount('#app')</div>
+
+<h4>5.1.2 路由配置（router/index.ts）</h4>
+<p>路由配置定义了应用的19个页面路由，采用懒加载和直接导入相结合的方式。配置了scrollBehavior使页面切换时自动滚动到顶部，并使用通配符路由捕获404页面。配置了路由鉴权守卫（requiresAuth），未登录用户访问需认证页面时自动重定向到登录页。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
+import HomePage from '@/pages/HomePage.vue'
+import ProductDetailPage from '@/pages/ProductDetailPage.vue'
+// ... 其他页面导入
+
+const routes = [
+  { path: '/', name: 'home', component: HomePage },
+  { path: '/category', name: 'category', component: CategoryPage },
+  { path: '/product/:id', name: 'product', component: ProductDetailPage },
+  { path: '/cart', name: 'cart', component: CartPage },
+  { path: '/login', name: 'login', component: LoginPage },
+  { path: '/register', name: 'register', component: RegisterPage },
+  { path: '/profile', name: 'profile', component: ProfilePage, meta: { requiresAuth: true } },
+  { path: '/order/confirm', name: 'orderConfirm', component: OrderConfirmPage, meta: { requiresAuth: true } },
+  { path: '/orders', name: 'orders', component: OrderListPage, meta: { requiresAuth: true } },
+  { path: '/order/:id', name: 'orderDetail', component: OrderDetailPage, meta: { requiresAuth: true } },
+  { path: '/favorites', name: 'favorites', component: FavoritesPage, meta: { requiresAuth: true } },
+  { path: '/address', name: 'addressList', component: AddressListPage, meta: { requiresAuth: true } },
+  { path: '/address/edit/:id?', name: 'addressEdit', component: AddressEditPage, meta: { requiresAuth: true } },
+  { path: '/admin/products', name: 'productManage', component: ProductManagePage, meta: { requiresAuth: true } },
+  { path: '/search', name: 'search', component: SearchPage },
+  { path: '/change-password', name: 'changePassword', component: ChangePasswordPage, meta: { requiresAuth: true } },
+  { path: '/history', name: 'history', component: BrowseHistoryPage, meta: { requiresAuth: true } },
+  { path: '/about', name: 'about', component: AboutPage },
+  { path: '/:pathMatch(.*)*', name: 'notFound', component: NotFoundPage },
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+  scrollBehavior() { return { top: 0 } }
+})
+
+// 路由鉴权守卫：未登录用户访问需认证页面时重定向到登录页
+router.beforeEach((to, _from, next) =&gt; {
+  if (to.meta.requiresAuth &amp;&amp; !localStorage.getItem('current_user')) {
+    next({ path: '/login', query: { redirect: to.fullPath } })
+  } else {
+    next()
+  }
+})
+
+export default router</div>
+
+<h4>5.1.3 根组件（App.vue）</h4>
+<p>根组件实现了响应式布局适配：移动端显示底部TabBar导航，PC端（≥768px）显示左侧固定侧边栏。通过provide/inject模式实现全局Toast通知功能，页面切换带有过渡动画效果。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">&lt;script setup lang="ts"&gt;
+import { ref, computed, onMounted, onUnmounted, provide } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Home, Grid3X3, ShoppingCart, User, Heart, Package, Settings } from 'lucide-vue-next'
+import TabBar from '@/components/TabBar.vue'
+import Toast from '@/components/Toast.vue'
+
+const route = useRoute()
+const router = useRouter()
+const toastMessage = ref('')
+const toastType = ref&lt;'success' | 'error' | 'info'&gt;('info')
+
+const showTabBarPages = ['/', '/cart', '/profile', '/category']
+const hideSidebarPages = ['/login', '/register']
+const isDesktop = ref(window.innerWidth &gt;= 768)
+
+// 响应式布局：监听窗口大小变化
+function handleResize() { isDesktop.value = window.innerWidth &gt;= 768 }
+onMounted(() =&gt; window.addEventListener('resize', handleResize))
+onUnmounted(() =&gt; window.removeEventListener('resize', handleResize))
+
+// PC端侧边栏显示条件
+const showSidebar = computed(() =&gt; isDesktop.value &amp;&amp; !hideSidebarPages.includes(route.path))
+
+// 侧边栏导航项
+const sidebarTabs = [
+  { name: '首页', path: '/', icon: Home },
+  { name: '分类', path: '/category', icon: Grid3X3 },
+  { name: '购物车', path: '/cart', icon: ShoppingCart },
+  { name: '我的', path: '/profile', icon: User },
+  { name: '收藏', path: '/favorites', icon: Heart },
+  { name: '订单', path: '/orders', icon: Package },
+  { name: '修改密码', path: '/change-password', icon: Settings },
+]
+
+// 全局Toast通知方法，通过provide提供给所有子组件
+function showToast(message: string, type: 'success' | 'error' | 'info' = 'info') {
+  toastMessage.value = ''
+  setTimeout(() =&gt; { toastMessage.value = message; toastType.value = type }, 50)
+}
+provide('showToast', showToast)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div class="app-layout"&gt;
+    &lt;!-- PC端侧边栏 --&gt;
+    &lt;aside class="desktop-sidebar" v-if="showSidebar"&gt;
+      &lt;div class="sidebar-brand" @click="router.push('/')"&gt;
+        &lt;span class="brand-icon"&gt;🛒&lt;/span&gt;
+        &lt;span class="brand-name"&gt;微商城&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;nav class="sidebar-nav"&gt;
+        &lt;div v-for="tab in sidebarTabs" :key="tab.path" class="sidebar-nav-item"
+          :class="{ active: isTabActive(tab.path) }" @click="router.push(tab.path)"&gt;
+          &lt;component :is="tab.icon" :size="20" /&gt;
+          &lt;span&gt;{{ tab.name }}&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/nav&gt;
+    &lt;/aside&gt;
+    &lt;!-- 主内容区 --&gt;
+    &lt;div class="app-main"&gt;
+      &lt;router-view v-slot="{ Component }"&gt;
+        &lt;Transition name="page" mode="out-in"&gt;
+          &lt;component :is="Component" /&gt;
+        &lt;/Transition&gt;
+      &lt;/router-view&gt;
+      &lt;TabBar v-if="showTabBarPages.includes(route.path) &amp;&amp; !isDesktop" /&gt;
+      &lt;Toast :message="toastMessage" :type="toastType" /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</div>
+
+<div class="page-break"></div>
+<h3>5.2 状态管理（Pinia Store）</h3>
+
+<h4>5.2.1 商品Store（stores/product.ts）</h4>
+<p>商品Store管理商品列表、当前分类、搜索关键词等状态，通过computed属性实现分类筛选和搜索过滤，避免重复计算提升性能。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import { products, categories, banners, type Product } from '@/data/products'
+
+export const useProductStore = defineStore('product', () =&gt; {
+  // 响应式状态
+  const allProducts = ref&lt;Product[]&gt;(products)
+  const currentCategory = ref('全部')
+  const searchKeyword = ref('')
+  const bannerList = ref(banners)
+
+  // 计算属性：根据分类和关键词筛选商品
+  const filteredProducts = computed(() =&gt; {
+    let result = allProducts.value
+    if (currentCategory.value !== '全部') {
+      result = result.filter(p =&gt; p.category === currentCategory.value)
+    }
+    if (searchKeyword.value.trim()) {
+      const keyword = searchKeyword.value.trim().toLowerCase()
+      result = result.filter(p =&gt;
+        p.name.toLowerCase().includes(keyword) ||
+        p.description.toLowerCase().includes(keyword) ||
+        p.category.toLowerCase().includes(keyword)
+      )
+    }
+    return result
+  })
+
+  // 计算属性：按销量排序的热门商品
+  const hotProducts = computed(() =&gt;
+    [...allProducts.value].sort((a, b) =&gt; b.sales - a.sales).slice(0, 6)
+  )
+
+  const categoryList = ref(categories)
+
+  function setCategory(category: string) { currentCategory.value = category }
+  function setSearchKeyword(keyword: string) { searchKeyword.value = keyword }
+  function getProductById(id: number): Product | undefined {
+    return allProducts.value.find(p =&gt; p.id === id)
+  }
+
+  return { allProducts, currentCategory, searchKeyword, filteredProducts,
+    hotProducts, categoryList, bannerList, setCategory, setSearchKeyword, getProductById }
+})</div>
+
+<h4>5.2.2 购物车Store（stores/cart.ts）</h4>
+<p>购物车Store实现了完整的购物车逻辑，包括添加商品（同规格合并数量）、删除、数量更新、勾选/全选、合计金额计算，并通过localStorage实现数据持久化。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">export const useCartStore = defineStore('cart', () =&gt; {
+  const items = ref&lt;CartItem[]&gt;([])
+
+  // 计算属性：已勾选商品
+  const checkedItems = computed(() =&gt; items.value.filter(item =&gt; item.checked))
+  // 计算属性：已勾选商品总价
+  const totalPrice = computed(() =&gt;
+    checkedItems.value.reduce((sum, item) =&gt; sum + item.price * item.quantity, 0)
+  )
+  // 计算属性：是否全选
+  const isAllChecked = computed(() =&gt;
+    items.value.length &gt; 0 &amp;&amp; items.value.every(item =&gt; item.checked)
+  )
+
+  // 加入购物车（同规格商品合并数量）
+  function addToCart(item: Omit&lt;CartItem, 'checked'&gt;) {
+    const existing = items.value.find(
+      i =&gt; i.productId === item.productId &amp;&amp; i.color === item.color &amp;&amp; i.size === item.size
+    )
+    if (existing) {
+      existing.quantity += item.quantity  // 同规格合并数量
+    } else {
+      items.value.push({ ...item, checked: true })
+    }
+    saveToStorage()
+  }
+
+  // 持久化到localStorage
+  function saveToStorage() {
+    localStorage.setItem('cart_items', JSON.stringify(items.value))
+  }
+
+  // 从localStorage恢复数据
+  function loadFromStorage() {
+    const data = localStorage.getItem('cart_items')
+    if (data) {
+      try { items.value = JSON.parse(data) }
+      catch { items.value = [] }
+    }
+  }
+
+  loadFromStorage()  // 初始化时加载数据
+  // ... 其他方法
+})</div>
+<h4>5.2.3 用户Store（stores/user.ts）</h4>
+<p>用户Store实现了注册、登录、退出、修改昵称等功能，注册用户列表和当前登录用户均通过localStorage持久化。登录时验证手机号格式和密码长度。<span class="member-tag">甘润达</span></p>
+
+<div class="code-block">export const useUserStore = defineStore('user', () =&gt; {
+  const currentUser = ref&lt;User | null&gt;(null)
+  const isLoggedIn = computed(() =&gt; currentUser.value !== null)
+
+  // 注册功能：验证手机号格式和密码长度
+  function register(phone: string, password: string) {
+    if (!/^1[3-9]\d{9}$/.test(phone))
+      return { success: false, message: '手机号格式不正确' }
+    if (password.length &lt; 6)
+      return { success: false, message: '密码长度不能少于6位' }
+    const users = getRegisteredUsers()
+    if (users.find(u =&gt; u.phone === phone))
+      return { success: false, message: '该手机号已注册' }
+    const newUser = { id: Date.now(), phone, password,
+      nickname: '用户' + phone.slice(-4), avatar: '' }
+    users.push(newUser)
+    saveRegisteredUsers(users)
+    return { success: true, message: '注册成功' }
+  }
+
+  // 登录功能：验证手机号和密码
+  function login(phone: string, password: string) {
+    if (!/^1[3-9]\d{9}$/.test(phone))
+      return { success: false, message: '手机号格式不正确' }
+    const users = getRegisteredUsers()
+    const user = users.find(u =&gt; u.phone === phone &amp;&amp; u.password === password)
+    if (!user) return { success: false, message: '手机号或密码错误' }
+    currentUser.value = user
+    localStorage.setItem('current_user', JSON.stringify(user))
+    return { success: true, message: '登录成功' }
+  }
+
+  // 修改昵称：同步更新当前用户和注册列表
+  function updateNickname(nickname: string) {
+    if (!currentUser.value) return
+    currentUser.value.nickname = nickname
+    localStorage.setItem('current_user', JSON.stringify(currentUser.value))
+    const users = getRegisteredUsers()
+    const user = users.find(u =&gt; u.id === currentUser.value!.id)
+    if (user) { user.nickname = nickname; saveRegisteredUsers(users) }
+  }
+  // ...
+})</div>
+
+<h4>5.2.4 订单Store（stores/order.ts）</h4>
+<p>订单Store管理订单的完整生命周期：创建→支付→发货→确认收货。支付后3秒自动模拟发货，体现订单状态流转。<span class="member-tag">甘润达</span></p>
+
+<div class="code-block">export const useOrderStore = defineStore('order', () =&gt; {
+  const orders = ref&lt;Order[]&gt;([])
+
+  // 创建订单
+  function createOrder(items: CartItem[], address: string): Order {
+    const order: Order = {
+      id: 'ORD' + Date.now(),
+      items: [...items],
+      totalPrice: items.reduce((sum, item) =&gt; sum + item.price * item.quantity, 0),
+      address, status: 'pending',
+      createTime: new Date().toLocaleString('zh-CN')
+    }
+    orders.value.unshift(order)
+    saveToStorage()
+    return order
+  }
+
+  // 支付订单，3秒后自动模拟发货
+  function payOrder(orderId: string) {
+    const order = orders.value.find(o =&gt; o.id === orderId)
+    if (order) {
+      order.status = 'paid'
+      order.payTime = new Date().toLocaleString('zh-CN')
+      saveToStorage()
+      setTimeout(() =&gt; { shipOrder(orderId) }, 3000)  // 模拟3秒后发货
+    }
+  }
+
+  // 确认收货
+  function confirmReceive(orderId: string) {
+    const order = orders.value.find(o =&gt; o.id === orderId)
+    if (order &amp;&amp; order.status === 'shipped') {
+      order.status = 'completed'
+      order.completeTime = new Date().toLocaleString('zh-CN')
+      saveToStorage()
+    }
+  }
+  // ...
+})</div>
+
+<div class="page-break"></div>
+<h3>5.3 首页模块</h3>
+
+<p>首页是用户进入应用后的第一个页面，包含轮播图、搜索栏、分类导航、热门推荐和商品列表五大区域。轮播图每3.5秒自动切换，热门推荐按销量排序取前6个商品横向滚动展示，商品列表支持分类筛选和关键词搜索。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">&lt;script setup lang="ts"&gt;
+import { ref, onMounted, onUnmounted, inject } from 'vue'
+import { useRouter } from 'vue-router'
+import { Search, Flame } from 'lucide-vue-next'
+import { useProductStore } from '@/stores/product'
+import { categoryIcons } from '@/data/products'
+
+const router = useRouter()
+const productStore = useProductStore()
+const showToast = inject&lt;(msg: string, type?: string) =&gt; void&gt;('showToast')!
+
+const searchInput = ref('')
+const currentBanner = ref(0)
+let bannerTimer: ReturnType&lt;typeof setInterval&gt;
+
+// 轮播图自动切换
+function startBannerTimer() {
+  bannerTimer = setInterval(() =&gt; {
+    currentBanner.value = (currentBanner.value + 1) % productStore.bannerList.length
+  }, 3500)
+}
+
+function handleSearch() {
+  productStore.setSearchKeyword(searchInput.value)
+}
+
+onMounted(() =&gt; { productStore.setSearchKeyword(''); startBannerTimer() })
+onUnmounted(() =&gt; { clearInterval(bannerTimer) })
+&lt;/script&gt;</div>
+
+<h3>5.4 商品详情模块</h3>
+
+<p>商品详情页展示商品完整信息，包括图片轮播（点击切换）、价格折扣、规格选择入口、用户评价（星级评分）、收藏功能。规格选择采用底部弹出弹窗（Bottom Sheet）交互模式，支持颜色、尺寸、数量选择。浏览商品时自动记录浏览历史。切换商品时自动重置规格选择、数量和图片索引，确保用户每次浏览都从初始状态开始。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">&lt;script setup lang="ts"&gt;
+import { ref, computed, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ArrowLeft, ShoppingCart, Heart, Star, ChevronRight } from 'lucide-vue-next'
+import { useProductStore } from '@/stores/product'
+import { useCartStore } from '@/stores/cart'
+import { useFavoriteStore } from '@/stores/favorite'
+import { useHistoryStore } from '@/stores/history'
+
+const route = useRoute()
+const productStore = useProductStore()
+const cartStore = useCartStore()
+const favoriteStore = useFavoriteStore()
+const historyStore = useHistoryStore()
+
+const productId = computed(() =&gt; Number(route.params.id))
+const product = computed(() =&gt; productStore.getProductById(productId.value))
+const isFav = computed(() =&gt; product.value ? favoriteStore.isFavorite(product.value.id) : false)
+
+// 记录浏览历史
+if (product.value) {
+  historyStore.addHistory(product.value.id)
+}
+
+// 规格弹窗
+const showSpecModal = ref(false)
+const specAction = ref&lt;'cart' | 'buy'&gt;('cart')
+
+function openSpecModal(action: 'cart' | 'buy') {
+  specAction.value = action
+  showSpecModal.value = true
+}
+
+function handleSpecConfirm() {
+  if (!product.value) return
+  cartStore.addToCart({
+    productId: product.value.id, name: product.value.name,
+    price: product.value.price, image: product.value.image,
+    color: selectedColor.value, size: selectedSize.value,
+    quantity: quantity.value,
+  })
+  if (specAction.value === 'cart') {
+    showToast('已加入购物车', 'success')
+  } else {
+    showSpecModal.value = false
+    router.push('/cart')
+  }
+  showSpecModal.value = false
+}
+&lt;/script&gt;</div>
+
+<div class="page-break"></div>
+
+<h3>5.5 购物车模块</h3>
+
+<p>购物车页展示已添加商品，支持勾选/全选、数量增减、删除确认（ConfirmDialog弹窗）、合计金额计算。底部结算栏固定定位，未登录时点击结算跳转登录页。满99元免运费提示动态计算差额。优惠券领取按钮提供交互反馈（Toast提示+已领取状态样式），包邮提示根据订单金额动态显示。<span class="member-tag">吴宇威</span></p>
+
+<div class="code-block">&lt;script setup lang="ts"&gt;
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ShoppingCart, Minus, Plus, Trash2 } from 'lucide-vue-next'
+import { useCartStore } from '@/stores/cart'
+import { useUserStore } from '@/stores/user'
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
+
+const cartStore = useCartStore()
+const userStore = useUserStore()
+const showDeleteConfirm = ref(false)
+const deleteIndex = ref(-1)
+
+function confirmDelete(index: number) {
+  deleteIndex.value = index
+  showDeleteConfirm.value = true
+}
+
+function handleCheckout() {
+  if (!userStore.isLoggedIn) { router.push('/login'); return }
+  if (cartStore.checkedItems.length === 0) return
+  router.push('/order/confirm')
+}
+&lt;/script&gt;
+
+&lt;!-- 免运费提示 --&gt;
+&lt;div class="promo-tip"&gt;
+  满99元免运费，还差¥{{ Math.max(0, 99 - cartStore.totalPrice).toFixed(0) }}元
+&lt;/div&gt;</div>
+<h3>5.6 用户认证模块</h3>
+
+<p>登录和注册页面采用统一的视觉风格，支持密码显示/隐藏切换（Eye/EyeOff图标），表单验证失败时错误提示带抖动动画（shake animation），输入框聚焦时显示橙色光晕效果。注册页增加确认密码字段，验证两次密码一致性。<span class="member-tag">甘润达</span></p>
+
+<div class="code-block">// 登录页核心逻辑
+function handleLogin() {
+  errorMsg.value = ''
+  if (!phone.value) { errorMsg.value = '请输入手机号'; return }
+  if (!/^1[3-9]\d{9}$/.test(phone.value)) { errorMsg.value = '手机号格式不正确'; return }
+  if (!password.value) { errorMsg.value = '请输入密码'; return }
+  if (password.value.length &lt; 6) { errorMsg.value = '密码长度不能少于6位'; return }
+  const result = userStore.login(phone.value, password.value)
+  if (result.success) { router.push('/profile') }
+  else { errorMsg.value = result.message }
+}
+
+// 注册页额外验证
+if (password.value !== confirmPassword.value) {
+  errorMsg.value = '两次输入的密码不一致'; return
+}</div>
+
+<h3>5.7 订单模块</h3>
+
+<p>订单系统包含订单确认、订单列表和订单详情三个页面。订单确认页展示收货地址（从地址Store读取默认地址）、商品清单、金额汇总，点击提交后模拟支付流程。订单列表页支持5个状态Tab筛选，可执行支付和确认收货操作。订单详情页展示完整订单信息和状态流转时间线。<span class="member-tag">甘润达</span></p>
+
+<div class="code-block">// 订单确认页：提交订单并模拟支付
+function handleSubmit() {
+  if (!userStore.isLoggedIn) { router.push('/login'); return }
+  const order = orderStore.createOrder(cartStore.checkedItems, address.value)
+  cartStore.clearChecked()
+  showPaySuccess.value = true
+  setTimeout(() =&gt; {
+    orderStore.payOrder(order.id)  // 支付后3秒自动发货
+    showPaySuccess.value = false
+    showToast('支付成功！', 'success')
+    router.push('/orders')
+  }, 1500)
+}
+
+// 订单列表页：状态Tab筛选
+const tabs = [
+  { key: 'all', label: '全部' },
+  { key: 'pending', label: '待付款' },
+  { key: 'paid', label: '待发货' },
+  { key: 'shipped', label: '待收货' },
+  { key: 'completed', label: '已完成' },
+]
+const filteredOrders = computed(() =&gt; {
+  if (activeTab.value === 'all') return orderStore.orders
+  return orderStore.orders.filter(o =&gt; o.status === activeTab.value)
+})</div>
+
+<div class="page-break"></div>
+<h3>5.8 分类浏览模块</h3>
+
+<p>分类浏览页采用经典的左右双栏布局：左侧为分类导航栏（88px宽），显示分类图标和名称，选中项带橙色左侧指示条；右侧为商品列表，展示该分类下所有商品的图片、名称、价格和标签。<span class="member-tag">姚泽楷</span></p>
+
+<div class="code-block">&lt;script setup lang="ts"&gt;
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useProductStore } from '@/stores/product'
+import { categories, categoryIcons } from '@/data/products'
+
+const router = useRouter()
+const productStore = useProductStore()
+const activeCategory = ref('服装')
+const categoryList = computed(() =&gt; categories.filter(c =&gt; c !== '全部'))
+const productsInCategory = computed(() =&gt;
+  productStore.allProducts.filter(p =&gt; p.category === activeCategory.value)
+)
+&lt;/script&gt;</div>
+
+<h3>5.9 地址管理模块</h3>
+
+<p>地址管理包含地址列表页和地址编辑页。列表页展示所有收货地址，支持设为默认和删除确认。编辑页支持新增和编辑两种模式，包含收货人、手机号、省市区、详细地址等字段，以及默认地址开关切换组件。<span class="member-tag">姚泽楷</span></p>
+
+<div class="code-block">// 地址Store核心逻辑
+export const useAddressStore = defineStore('address', () =&gt; {
+  const addresses = ref&lt;Address[]&gt;([])
+  const defaultAddress = computed(() =&gt;
+    addresses.value.find(a =&gt; a.isDefault) || addresses.value[0] || null
+  )
+
+  function addAddress(data: Omit&lt;Address, 'id'&gt;) {
+    const address = { ...data, id: 'ADDR' + Date.now() }
+    if (address.isDefault) {
+      addresses.value.forEach(a =&gt; a.isDefault = false)  // 取消其他默认
+    }
+    addresses.value.push(address)
+    saveToStorage()
+  }
+
+  function setDefault(id: string) {
+    addresses.value.forEach(a =&gt; a.isDefault = a.id === id)
+    saveToStorage()
+  }
+  // ...
+})</div>
+
+<h3>5.10 商品管理模块</h3>
+
+<p>商品管理页实现了作业要求的扩展功能——商品添加和删除。添加商品表单支持名称、售价、原价、分类、描述和图片URL输入，未填图片URL时自动生成占位图。删除商品需确认弹窗二次确认。<span class="member-tag">黄显杰</span></p>
+
+<div class="code-block">// 添加商品
+function handleAddProduct() {
+  if (!newProduct.value.name.trim()) return
+  if (newProduct.value.price &lt;= 0) return
+  const id = Date.now()
+  productStore.allProducts.push({
+    id,
+    name: newProduct.value.name.trim(),
+    price: newProduct.value.price,
+    originalPrice: newProduct.value.originalPrice || newProduct.value.price * 2,
+    image: newProduct.value.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt='
+      + encodeURIComponent(newProduct.value.name) + '%20product%20photo&image_size=square',
+    images: [newProduct.value.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt='
+      + encodeURIComponent(newProduct.value.name) + '%20product%20photo&image_size=square'],
+    description: newProduct.value.description || newProduct.value.name,
+    category: newProduct.value.category,
+    sales: 0, specs: { colors: ['默认'], sizes: ['标准版'] },
+    tags: ['新品'], reviews: []
+  })
+  newProduct.value = { name: '', price: 0, originalPrice: 0,
+    description: '', category: '服装', image: '' }
+  showAddForm.value = false
+}
+
+// 删除商品
+function handleDeleteConfirm() {
+  productStore.allProducts = productStore.allProducts.filter(p =&gt; p.id !== deleteId.value)
+  showDeleteConfirm.value = false
+}</div>
+
+<h3>5.11 搜索与浏览历史模块</h3>
+
+<p>搜索页提供独立的关键词搜索功能，用户输入关键词后实时筛选匹配的商品列表。浏览历史功能通过HistoryStore自动记录用户浏览过的商品ID（最多保留20条，自动去重），在浏览历史页按时间倒序展示，支持一键清空历史记录。<span class="member-tag">黄显杰</span></p>
+
+<div class="code-block">// 浏览历史Store核心逻辑
+export const useHistoryStore = defineStore('history', () =&gt; {
+  const historyIds = ref&lt;number[]&gt;([])
+
+  function addHistory(productId: number) {
+    historyIds.value = historyIds.value.filter(id =&gt; id !== productId)  // 去重
+    historyIds.value.unshift(productId)  // 最新浏览的排在前面
+    if (historyIds.value.length &gt; 20) historyIds.value = historyIds.value.slice(0, 20)  // 最多20条
+    saveToStorage()
+  }
+
+  function clearHistory() {
+    historyIds.value = []
+    saveToStorage()
+  }
+  // ...
+})</div>
+
+<div class="page-break"></div>
+<!-- 六、测试 -->
+<h2>六、测试</h2>
+
+<h3>6.1 测试用例</h3>
+
+<table class="report">
+<tr><th>编号</th><th>测试模块</th><th>测试内容</th><th>测试步骤</th><th>预期结果</th><th>实际结果</th><th>状态</th></tr>
+<tr><td>TC-01</td><td>首页</td><td>轮播图自动切换</td><td>进入首页，等待3.5秒观察轮播图</td><td>轮播图自动切换到下一张</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-02</td><td>首页</td><td>分类筛选商品</td><td>点击"数码"分类标签</td><td>商品列表只显示数码类商品</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-03</td><td>首页</td><td>关键词搜索</td><td>在搜索框输入"耳机"并回车</td><td>显示包含"耳机"关键词的商品</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-04</td><td>商品详情</td><td>加入购物车</td><td>进入商品详情，选择规格，点击加入购物车</td><td>Toast提示"已加入购物车"，购物车角标+1</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-05</td><td>商品详情</td><td>收藏商品</td><td>点击收藏心形图标</td><td>心形变橙色填充，Toast提示"已收藏"</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-06</td><td>商品详情</td><td>规格弹窗</td><td>点击"加入购物车"按钮</td><td>底部弹出规格选择弹窗</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-07</td><td>购物车</td><td>数量增减</td><td>点击商品数量的+/-按钮</td><td>数量正确增减，合计金额实时更新</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-08</td><td>购物车</td><td>删除商品</td><td>点击删除图标</td><td>弹出确认弹窗，确认后商品移除</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-09</td><td>购物车</td><td>全选/取消全选</td><td>点击全选复选框</td><td>所有商品勾选状态切换，合计金额更新</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-10</td><td>注册</td><td>手机号格式验证</td><td>输入错误手机号"123456"并提交</td><td>提示"手机号格式不正确"</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-11</td><td>注册</td><td>密码一致性验证</td><td>输入不一致的确认密码</td><td>提示"两次输入的密码不一致"</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-12</td><td>注册</td><td>正常注册流程</td><td>输入正确手机号和密码，点击注册</td><td>跳转到登录页</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-13</td><td>登录</td><td>错误密码登录</td><td>输入正确手机号但错误密码</td><td>提示"手机号或密码错误"</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-14</td><td>登录</td><td>正常登录流程</td><td>输入正确手机号和密码，点击登录</td><td>跳转到个人中心，显示用户信息</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-15</td><td>订单</td><td>创建订单</td><td>购物车勾选商品，点击结算，提交订单</td><td>显示支付成功弹窗，跳转订单列表</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-16</td><td>订单</td><td>模拟发货</td><td>支付成功后等待3秒</td><td>订单状态自动变为"待收货"</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-17</td><td>订单</td><td>确认收货</td><td>在待收货订单点击"确认收货"</td><td>订单状态变为"已完成"</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-18</td><td>地址</td><td>添加地址</td><td>填写地址信息，点击保存</td><td>地址列表新增一条记录</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-19</td><td>地址</td><td>设为默认</td><td>点击"设为默认"按钮</td><td>该地址标记为默认，原默认取消</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-20</td><td>商品管理</td><td>添加商品</td><td>填写商品信息，点击添加</td><td>商品列表新增一条，首页可搜索到</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-21</td><td>商品管理</td><td>删除商品</td><td>点击删除图标，确认删除</td><td>商品从列表移除</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-22</td><td>分类</td><td>分类切换</td><td>在分类页点击左侧不同分类</td><td>右侧商品列表切换为对应分类</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-23</td><td>404</td><td>无效路由</td><td>访问不存在的路由/abc</td><td>显示404页面，可返回首页</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-24</td><td>持久化</td><td>数据持久化</td><td>添加购物车商品后刷新页面</td><td>购物车数据不丢失</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-25</td><td>商品详情</td><td>切换商品状态重置</td><td>在商品详情页选择规格后，切换到另一个商品</td><td>规格选择、数量、图片索引自动重置为默认值</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-26</td><td>购物车</td><td>优惠券领取交互</td><td>点击优惠券"领取"按钮</td><td>Toast提示"优惠券领取成功"，按钮变为"已领取"状态</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-27</td><td>修改密码</td><td>密码修改成功提示</td><td>输入正确原密码和新密码，点击确认修改</td><td>Toast提示"密码修改成功"并自动返回</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-28</td><td>路由鉴权</td><td>未登录访问受保护页面</td><td>未登录状态下直接访问/profile</td><td>自动重定向到登录页，登录后跳回原页面</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-29</td><td>搜索</td><td>关键词搜索功能</td><td>在搜索页输入关键词并搜索</td><td>显示匹配的商品列表</td><td>与预期一致</td><td>通过</td></tr>
+<tr><td>TC-30</td><td>浏览历史</td><td>浏览记录展示</td><td>浏览多个商品后进入浏览历史页</td><td>按时间倒序显示浏览过的商品</td><td>与预期一致</td><td>通过</td></tr>
+</table>
+
+<div class="page-break"></div>
+<!-- 七、结果分析 -->
+<h2>七、结果分析</h2>
+
+<p>本项目成功实现了一个功能完整的微商城前端应用，涵盖商品浏览、购物车、用户认证、订单系统、地址管理、收藏、分类浏览、商品管理等核心功能模块。通过30个测试用例的验证，所有功能均达到预期效果。</p>
+
+<h3>7.1 运行效果说明</h3>
+
+<p><strong>首页</strong>：页面顶部为橙色渐变标题栏，下方搜索栏带圆角和阴影效果。轮播图每3.5秒自动切换，底部有圆点指示器和页码计数。分类导航以图标+文字形式横向排列，选中项带橙色背景。热门推荐区域展示销量前6的商品，带排名标签。商品列表采用双列网格布局，每张卡片包含商品图片、名称、描述、价格和折扣标签。</p>
+
+<p><strong>商品详情页</strong>：顶部图片支持点击切换，带圆点指示器和页码。价格区域以大号橙色字体显示，折扣百分比标签醒目。评价区域展示用户头像（首字母渐变圆形）、星级评分和评论内容。底部操作栏固定定位，左侧收藏图标，右侧加入购物车和立即购买双按钮。规格选择为底部弹出弹窗，支持颜色、尺寸、数量选择。</p>
+
+<p><strong>购物车页</strong>：商品以卡片形式排列，左侧圆形复选框，中间商品图片和信息，右侧数量步进器和删除按钮。底部结算栏固定定位，左侧全选，右侧合计金额和结算按钮。免运费提示条动态计算差额。</p>
+
+<p><strong>登录/注册页</strong>：居中品牌图标和标题，输入框聚焦时显示橙色光晕，密码框右侧有眼睛图标切换显示。验证失败时错误提示带红色背景和抖动动画。登录按钮为橙色渐变带阴影。</p>
+
+<p><strong>个人中心</strong>：顶部橙色渐变背景区域展示用户头像和昵称，昵称旁有编辑按钮。订单入口区域展示4个状态图标，待付款和待收货带红色角标。功能菜单列表包含订单、收藏、地址、商品管理等入口。</p>
+
+<p><strong>订单列表页</strong>：5个状态Tab横向排列，选中项底部有橙色指示条。订单卡片展示商品信息、金额和操作按钮（去支付/确认收货）。</p>
+
+<p><strong>分类浏览页</strong>：左侧88px宽分类导航栏，选中项带橙色左侧指示条；右侧商品列表以横向布局展示。</p>
+
+<p><strong>地址管理页</strong>：地址卡片展示收货人、手机号、完整地址，默认地址带橙色标签。底部固定"新增收货地址"按钮。编辑页包含完整表单和默认地址开关。</p>
+
+<h3>7.2 技术亮点</h3>
+
+<p>1. <strong>Composition API + TypeScript</strong>：全部组件采用Vue 3 Composition API和TypeScript开发，类型安全，代码可维护性高。</p>
+<p>2. <strong>Pinia状态管理</strong>：7个独立Store模块化管理应用状态，computed属性实现派生状态计算，localStorage实现数据持久化。</p>
+<p>3. <strong>组件化设计</strong>：Toast通知、确认弹窗、图片兜底等公共组件复用性高，通过provide/inject实现跨组件通信。</p>
+<p>4. <strong>交互动画</strong>：fadeInUp入场动画、shake错误抖动、slideUp弹窗动画、轮播图淡入淡出等，提升用户体验。</p>
+<p>5. <strong>订单状态流转</strong>：pending→paid→shipped→completed完整生命周期，支付后自动模拟发货。</p>
+<p>6. <strong>响应式布局适配</strong>：移动端底部TabBar导航与PC端左侧固定侧边栏自动切换，通过监听窗口resize事件实现响应式布局。</p>
+<p>7. <strong>路由鉴权守卫</strong>：通过router.beforeEach全局前置守卫和meta.requiresAuth标记，实现未登录用户自动重定向到登录页，登录后跳回原页面。</p>
+<p>8. <strong>数据一致性保障</strong>：商品详情页切换商品时自动重置选择状态，订单确认页组件卸载时清理定时器防止内存泄漏，全局统一使用Toast替代原生alert。</p>
+
+<div class="page-break"></div>
+<!-- 八、个人总结与分工 -->
+<h2>八、个人总结与分工</h2>
+
+<h3>8.1 小组分工</h3>
+
+<table class="report">
+<tr><th>姓名</th><th>分工内容</th><th>负责模块</th><th>贡献度</th></tr>
+<tr>
+  <td><strong>吴宇威</strong></td>
+  <td>项目架构设计、核心框架搭建、路由配置、状态管理设计、首页开发、商品详情页开发、购物车页开发、全局组件开发（Toast/ConfirmDialog/TabBar）、全局样式设计</td>
+  <td>项目架构、路由、ProductStore、CartStore、首页、商品详情页、购物车页、公共组件</td>
+  <td>35%</td>
+</tr>
+<tr>
+  <td><strong>甘润达</strong></td>
+  <td>用户认证模块开发、订单系统开发（订单确认/列表/详情）、UserStore和OrderStore设计、表单验证逻辑</td>
+  <td>UserStore、OrderStore、登录页、注册页、订单确认页、订单列表页、订单详情页</td>
+  <td>25%</td>
+</tr>
+<tr>
+  <td><strong>姚泽楷</strong></td>
+  <td>分类浏览页开发、地址管理模块开发、收藏功能开发、AddressStore和FavoriteStore设计、UI美化</td>
+  <td>CategoryPage、AddressListPage、AddressEditPage、FavoritesPage、AddressStore、FavoriteStore</td>
+  <td>20%</td>
+</tr>
+<tr>
+  <td><strong>黄显杰</strong></td>
+  <td>商品管理页开发、浏览历史功能开发、404页面开发、图片兜底组件、测试用例编写、文档整理</td>
+  <td>ProductManagePage、NotFoundPage、HistoryStore、ImageWithFallback、测试</td>
+  <td>20%</td>
+</tr>
+</table>
+
+<h3>8.2 个人总结</h3>
+
+<h4>吴宇威</h4>
+<p>本次大作业中，我主要负责项目整体架构设计和核心模块开发。通过从零搭建Vue 3 + TypeScript + Pinia + Vue Router技术栈，深入理解了Composition API的响应式原理和状态管理的最佳实践。在开发购物车模块时，同规格商品合并数量的逻辑设计让我对响应式数据的更新机制有了更深的认识。全局Toast通知采用provide/inject模式，避免了props逐层传递的繁琐。项目开发过程中最大的收获是理解了前端框架的组件化思想——将复杂页面拆分为独立、可复用的组件，通过清晰的接口通信，使代码结构清晰、易于维护。</p>
+
+<h4>甘润达</h4>
+<p>我负责用户认证和订单系统模块的开发。在实现注册登录功能时，我学习了正则表达式验证手机号格式的方法，以及如何在Pinia Store中管理用户状态和持久化数据。订单系统的状态流转设计（pending→paid→shipped→completed）让我理解了状态机的设计思想，通过setTimeout模拟发货流程，使应用无需后端也能展示完整的购物流程。表单验证的抖动动画效果增强了用户交互体验，让我认识到细节设计对用户体验的重要性。</p>
+
+<h4>姚泽楷</h4>
+<p>我负责分类浏览页和地址管理模块的开发。分类页的左右双栏布局是一个经典的电商UI模式，左侧固定宽度导航栏配合右侧滚动内容区，通过CSS的flex布局实现，选中项的橙色指示条使用::before伪元素定位。地址管理模块涉及CRUD完整操作，设为默认地址时需要取消其他地址的默认状态，这个逻辑让我理解了状态一致性的重要性。收藏功能通过Pinia Store统一管理，在商品详情页和个人中心页都能访问和操作，体现了集中式状态管理的优势。</p>
+
+<h4>黄显杰</h4>
+<p>我负责商品管理、浏览历史、404页面和测试工作。商品管理页实现了作业要求的扩展功能——添加和删除商品，添加时自动生成占位图片URL，删除时二次确认防止误操作。浏览历史功能通过localStorage记录用户浏览过的商品ID，最多保留20条，去重处理确保同一商品不会重复记录。在编写24个测试用例的过程中，我系统地验证了所有功能模块，确保每个交互流程都能正常工作，这让我认识到测试在软件开发中的重要性。</p>
+
+<h3>8.3 收获与体会</h3>
+
+<p>通过本次大作业，我们小组深入实践了Vue 3框架的核心技术，包括Composition API、响应式系统、组件化开发、路由管理和状态管理。项目从需求分析、功能设计、代码实现到测试验证的完整开发流程，让我们体验了真实的前端项目开发过程。团队协作中，我们通过合理的分工和有效的沟通，确保了项目按时高质量完成。这次实践不仅巩固了课堂所学知识，更培养了我们的工程化思维和团队合作能力。</p>
+
+</body>
+</html>
